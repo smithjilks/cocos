@@ -74,6 +74,8 @@ func (p *attestedCertificateProvider) SetTTL(ttl time.Duration) {
 }
 
 func (p *attestedCertificateProvider) GetCertificate(clientHello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+	println("Get certificates function...")
+
 	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate private key: %w", err)
@@ -107,8 +109,12 @@ func (p *attestedCertificateProvider) GetCertificate(clientHello *tls.ClientHell
 	}
 
 	if err != nil {
+		println("Get certificates function failed to generate certs...")
+
 		return nil, fmt.Errorf("failed to generate certificate: %w", err)
 	}
+
+	println("Get certificates function completed...")
 
 	return &tls.Certificate{
 		Certificate: [][]byte{certDERBytes},
